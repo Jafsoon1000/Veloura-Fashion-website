@@ -1,61 +1,73 @@
-# Veloura Fashion Website (Full Stack)
+# 👗 Veloura Fashion Store
 
-Full-stack fashion website built with:
-- Frontend: HTML, CSS, JavaScript, React (Vite)
-- Backend: Node.js, Express, JavaScript
-- Database: MongoDB (Mongoose)
-- Auth: Register/Login with JWT
-- Phone verification: OTP flow (Twilio-ready, with dev fallback)
+A premium, full-stack e-commerce experience built for modern fashion brands. Veloura combines a sleek obsidian-dark aesthetic with a robust Mongoose/Express backend and a responsive React frontend.
 
-## Pages Included (10+)
-1. Home
-2. Shop
-3. Product Details
-4. Categories
-5. Lookbook
-6. About
-7. Contact
-8. Blog
-9. Cart
-10. Checkout
-11. Login
-12. Register
-13. Verify Phone
-14. Profile
-15. 404 Not Found
+![Veloura Banner](https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=1200&h=400)
 
-## Project Structure
-```text
-frontend/
-backend/
+## ✨ Key Features
+
+- **🛍️ Complete Shopping Flow**: Persistent cart management, dynamic product listing, and a multi-step checkout experience.
+- **🔍 Advanced Search & Filter**: Real-time product searching and category-based filtering.
+- **🔐 Secure Authentication**: JWT-based login/register with route protection.
+- **🌗 Dynamic Theming**: Smooth transition between light and obsidian-dark modes.
+- **📱 Responsive Design**: Fully optimized for mobile, tablet, and desktop viewing.
+- **🛠️ Admin Dashboard**: Basic product management interface for administrators.
+
+## 🚀 Tech Stack
+
+- **Frontend**: React 18, Vite, React Router 6, Context API (for Auth & Cart).
+- **Backend**: Node.js, Express, MongoDB/Mongoose.
+- **Styling**: Vanilla CSS with HSL variables and CSS Grid/Flexbox.
+- **Auth**: JSON Web Tokens (JWT).
+
+## 🛠️ Getting Started
+
+### Prerequisites
+- Node.js (v16+)
+- MongoDB (Local or Atlas)
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/Jafsoon1000/Veloura-Fashion-website.git
+cd Veloura-Fashion-website
 ```
 
-## Setup
-
-### 1) Backend
+### 2. Setup Backend
 ```bash
 cd backend
-cp .env.example .env
 npm install
+# Create a .env file based on .env.example
 npm run dev
 ```
 
-Set these in `backend/.env`:
-- `MONGO_URI`
-- `JWT_SECRET`
-- Optional Twilio fields for real SMS:
-  - `TWILIO_ACCOUNT_SID`
-  - `TWILIO_AUTH_TOKEN`
-  - `TWILIO_PHONE_NUMBER`
-
-If Twilio is not configured, OTP is returned in API response as `debugOtp` for testing.
-
-### 2) Frontend
+### 3. Setup Frontend
 ```bash
-cd frontend
+cd ../frontend
 npm install
 npm run dev
 ```
 
-Frontend runs on `http://localhost:5173`.
-Backend runs on `http://localhost:5000`.
+## 📂 Project Structure
+
+```text
+├── backend
+│   ├── controllers     # Business logic
+│   ├── models          # Mongoose schemas
+│   ├── routes          # API endpoints
+│   └── server.js      # Entry point
+├── frontend
+│   ├── src
+│   │   ├── components  # Reusable UI elements
+│   │   ├── context     # Global state (Cart, Auth)
+│   │   ├── pages       # Route components
+│   │   └── styles.css  # Global design system
+└── README.md
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
