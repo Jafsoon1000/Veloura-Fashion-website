@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useWishlist } from "../context/WishlistContext";
 
 export default function Shop() {
+  const { wishlistItems, addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [keyword, setKeyword] = useState("");
@@ -73,13 +75,25 @@ export default function Shop() {
             <article key={product._id} className="card product-card">
               <div className="product-image">
                 <img src={product.image} alt={product.name} />
+                <button
+                  className={`wishlist-btn ${isInWishlist(product._id) ? "active" : ""}`}
+                  onClick={() =>
+                    isInWishlist(product._id)
+                      ? removeFromWishlist(product._id)
+                      : addToWishlist(product)
+                  }
+                >
+                  {isInWishlist(product._id) ? "❤️" : "🤍"}
+                </button>
               </div>
               <div className="product-info">
                 <h3>{product.name}</h3>
                 <p className="price">${product.price}</p>
-                <Link to={`/product/${product._id}`} className="btn-outline">
-                  View Details
-                </Link>
+                <div className="card-actions">
+                  <Link to={`/product/${product._id}`} className="btn-outline">
+                    Details
+                  </Link>
+                </div>
               </div>
             </article>
           ))}
