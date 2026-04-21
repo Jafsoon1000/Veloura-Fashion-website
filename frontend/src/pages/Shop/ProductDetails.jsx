@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useCartStore } from "../../store/useCartStore";
 import { useWishlistStore } from "../../store/useWishlistStore";
 import { useAuthStore } from "../../store/useAuthStore";
+import StarRating from "../../components/StarRating";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -72,6 +73,10 @@ export default function ProductDetails() {
         </div>
         <div className="product-detail-info">
           <h2>{product.name}</h2>
+          <div style={{ display: "flex", gap: "8px", alignItems: "center", margin: "10px 0" }}>
+            <StarRating rating={product.rating} />
+            <span style={{ fontSize: "0.9em", color: "gray" }}>({product.numReviews} Reviews)</span>
+          </div>
           <p className="category">{product.category}</p>
           <p className="description">{product.description}</p>
           <p className="price">Price: ${product.price}</p>
@@ -112,7 +117,9 @@ export default function ProductDetails() {
           {product.reviews.map((review) => (
             <li key={review._id} className="review-item">
               <strong>{review.name}</strong>
-              <div className="rating">{"⭐".repeat(review.rating)}</div>
+              <div className="rating" style={{ margin: "6px 0" }}>
+                <StarRating rating={review.rating} />
+              </div>
               <p className="date">{new Date(review.createdAt).toLocaleDateString()}</p>
               <p className="comment">{review.comment}</p>
             </li>

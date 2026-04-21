@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useWishlistStore } from "../../store/useWishlistStore";
 import { useCartStore } from "../../store/useCartStore";
+import StarRating from "../../components/StarRating";
 
 export default function Shop() {
   const { wishlistItems, addToWishlist, removeFromWishlist, isInWishlist } = useWishlistStore();
@@ -168,8 +169,8 @@ export default function Shop() {
                     </div>
                     <div className="product-info">
                       <h3>{product.name}</h3>
-                      <div className="rating-row">
-                         {"⭐".repeat(Math.round(product.rating || 0))}
+                      <div className="rating-row" style={{ display: "flex", gap: "8px", alignItems: "center", marginBottom: "8px" }}>
+                         <StarRating rating={product.rating} />
                          <span className="review-count">({product.numReviews})</span>
                       </div>
                       <p className="price">${product.price}</p>
