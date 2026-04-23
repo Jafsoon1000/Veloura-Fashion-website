@@ -7,6 +7,7 @@ A premium, full-stack e-commerce experience built for modern fashion brands. Vel
 ## ✨ Key Features
 
 - **🛍️ Complete Shopping Flow**: Persistent cart management, dynamic product listing, and a multi-step checkout experience.
+- **🏷️ Promo Code System**: Admin-managed discount codes (percentage or fixed amount) that users can apply at checkout.
 - **🔍 Advanced Search & Filter**: Real-time product searching and category-based filtering.
 - **💖 Wishlist System**: Users can save their favorite items for later with instant localStorage persistence.
 - **⭐ Product Reviews & Ratings**: Full feedback system with star ratings and customer comments.
@@ -14,11 +15,11 @@ A premium, full-stack e-commerce experience built for modern fashion brands. Vel
 - **🔐 Secure Authentication**: JWT-based login/register with route protection.
 - **🌗 Dynamic Theming**: Smooth transition between light and obsidian-dark modes.
 - **📱 Responsive Design**: Fully optimized for mobile, tablet, and desktop viewing.
-- **🛠️ Admin Dashboard**: Basic product management interface for administrators.
+- **🛠️ Admin Dashboard**: Manage products, users, orders, and promo codes from a secure interface.
 
 ## 🚀 Tech Stack
 
-- **Frontend**: React 18, Vite, React Router 6, Context API (Auth, Cart, & Wishlist).
+- **Frontend**: React 18, Vite, React Router 6, Zustand (Auth, Cart, Theme & Wishlist).
 - **Backend**: Node.js, Express, MongoDB/Mongoose.
 - **Styling**: Vanilla CSS with HSL variables and CSS Grid/Flexbox.
 - **Auth**: JSON Web Tokens (JWT).
