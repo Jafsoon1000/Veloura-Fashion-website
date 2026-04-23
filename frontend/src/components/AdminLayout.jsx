@@ -33,6 +33,12 @@ export default function AdminLayout({ children }) {
           >
             Users
           </Link>
+          <Link 
+            to="/admin/coupons" 
+            className={`admin-nav-link ${path === '/admin/coupons' ? 'active' : ''}`}
+          >
+            Coupons
+          </Link>
         </nav>
       </aside>
       <main className="admin-main">

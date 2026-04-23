@@ -1,7 +1,8 @@
 import Order from "../models/Order.js";
+import Coupon from "../models/Coupon.js";
 
 export async function addOrderItems(req, res) {
-  const { orderItems, shippingAddress, paymentMethod, totalPrice } = req.body;
+  const { orderItems, shippingAddress, paymentMethod, totalPrice, couponCode, discountAmount } = req.body;
 
   if (orderItems && orderItems.length === 0) {
     return res.status(400).json({ error: "No order items" });
@@ -13,10 +14,17 @@ export async function addOrderItems(req, res) {
       user: req.user._id, // Assumes auth middleware provides req.user
       shippingAddress,
       paymentMethod,
+      couponCode: couponCode || "",
+      discountAmount: discountAmount || 0,
       totalPrice
     });
 
     const createdOrder = await order.save();
+
+    if (couponCode) {
+      await Coupon.findOneAndUpdate({ code: couponCode }, { $inc: { timesUsed: 1 } });
+    }
+
     return res.status(201).json(createdOrder);
   } catch (error) {
     return res.status(500).json({ error: "Order creation failed" });

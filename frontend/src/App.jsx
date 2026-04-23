@@ -21,6 +21,7 @@ import AdminProducts from "./pages/Admin/AdminProducts";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminOrders from "./pages/Admin/AdminOrders";
 import AdminUsers from "./pages/Admin/AdminUsers";
+import AdminCoupons from "./pages/Admin/AdminCoupons";
 import AdminRoute from "./components/AdminRoute";
 import AdminLayout from "./components/AdminLayout";
 import Wishlist from "./pages/Shop/Wishlist";
@@ -66,6 +67,7 @@ export default function App() {
                     <Route path="orders" element={<AdminOrders />} />
                     <Route path="users" element={<AdminUsers />} />
                     <Route path="products" element={<AdminProducts />} />
+                    <Route path="coupons" element={<AdminCoupons />} />
                   </Routes>
                 </AdminLayout>
               </AdminRoute>

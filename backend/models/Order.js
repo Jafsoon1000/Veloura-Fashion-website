@@ -27,6 +27,8 @@ const orderSchema = new mongoose.Schema(
       country: { type: String, required: true }
     },
     paymentMethod: { type: String, required: true },
+    couponCode: { type: String, default: "" },
+    discountAmount: { type: Number, required: true, default: 0.0 },
     totalPrice: { type: Number, required: true, default: 0.0 },
     isPaid: { type: Boolean, required: true, default: false },
     paidAt: { type: Date },

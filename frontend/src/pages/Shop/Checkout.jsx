@@ -4,7 +4,7 @@ import { useCartStore } from "../../store/useCartStore";
 import { useAuthStore } from "../../store/useAuthStore";
 
 export default function Checkout() {
-  const { cartItems, itemsPrice, clearCart } = useCartStore();
+  const { cartItems, itemsPrice, clearCart, coupon, applyCoupon, removeCoupon } = useCartStore();
   const { user } = useAuthStore();
   const navigate = useNavigate();
 
@@ -13,6 +13,41 @@ export default function Checkout() {
   const [postalCode, setPostalCode] = useState("");
   const [country, setCountry] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [promoCodeInput, setPromoCodeInput] = useState("");
+  const [promoError, setPromoError] = useState("");
+  
+  const basePrice = itemsPrice();
+  let finalPrice = basePrice;
+  let discountAmount = 0;
+  
+  if (coupon) {
+    if (coupon.discountType === 'percentage') {
+      discountAmount = basePrice * (coupon.discountValue / 100);
+    } else {
+      discountAmount = coupon.discountValue;
+    }
+    finalPrice = Math.max(0, basePrice - discountAmount);
+  }
+
+  const handleApplyCoupon = async () => {
+    if (!promoCodeInput) return;
+    setPromoError("");
+    try {
+      const res = await fetch("http://localhost:5000/api/coupons/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: promoCodeInput }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Invalid coupon");
+      }
+      applyCoupon(data);
+      setPromoCodeInput("");
+    } catch (err) {
+      setPromoError(err.message);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,7 +72,9 @@ export default function Checkout() {
         })),
         shippingAddress: { address, city, postalCode, country },
         paymentMethod: "Credit Card",
-        totalPrice: itemsPrice,
+        totalPrice: finalPrice,
+        couponCode: coupon ? coupon.code : "",
+        discountAmount: discountAmount,
       };
 
       const res = await fetch("http://localhost:5000/api/orders", {
@@ -117,7 +154,7 @@ export default function Checkout() {
           </div>
 
           <button type="submit" className="btn-primary block" disabled={isProcessing}>
-            {isProcessing ? "Processing Payment..." : `Pay $${itemsPrice.toFixed(2)}`}
+            {isProcessing ? "Processing Payment..." : `Pay $${finalPrice.toFixed(2)}`}
           </button>
         </form>
 
@@ -130,9 +167,44 @@ export default function Checkout() {
             </div>
           ))}
           <hr />
-          <div className="summary-total">
-            <span>Total:</span>
-            <span>${itemsPrice.toFixed(2)}</span>
+          
+          <div className="promo-section" style={{ margin: "1rem 0" }}>
+            {coupon ? (
+              <div className="applied-coupon" style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem', backgroundColor: 'var(--bg-secondary)', borderRadius: '4px' }}>
+                <span>Code <strong>{coupon.code}</strong> applied!</span>
+                <button type="button" onClick={removeCoupon} style={{ color: 'var(--color-danger)', background: 'none', border: 'none', cursor: 'pointer' }}>Remove</button>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <input 
+                  type="text" 
+                  placeholder="Promo Code" 
+                  value={promoCodeInput}
+                  onChange={(e) => setPromoCodeInput(e.target.value)}
+                  style={{ flex: 1 }}
+                />
+                <button type="button" onClick={handleApplyCoupon} className="btn">Apply</button>
+              </div>
+            )}
+            {promoError && <p style={{ color: 'var(--color-danger)', fontSize: '0.875rem', marginTop: '0.5rem' }}>{promoError}</p>}
+          </div>
+          <hr />
+
+          <div className="summary-total" style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <span>Subtotal:</span>
+              <span>${basePrice.toFixed(2)}</span>
+            </div>
+            {coupon && (
+              <div style={{ display: "flex", justifyContent: "space-between", color: "var(--color-accent)" }}>
+                <span>Discount ({coupon.code}):</span>
+                <span>-${discountAmount.toFixed(2)}</span>
+              </div>
+            )}
+            <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold", fontSize: "1.2rem", marginTop: "0.5rem" }}>
+              <span>Total:</span>
+              <span>${finalPrice.toFixed(2)}</span>
+            </div>
           </div>
         </div>
       </div>

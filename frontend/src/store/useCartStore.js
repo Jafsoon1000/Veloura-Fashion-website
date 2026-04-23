@@ -2,6 +2,7 @@ import { create } from 'zustand';
 
 export const useCartStore = create((set, get) => ({
   cartItems: JSON.parse(localStorage.getItem("cartItems")) || [],
+  coupon: JSON.parse(localStorage.getItem("coupon")) || null,
   
   addToCart: (product, quantity = 1) => set((state) => {
     const existItem = state.cartItems.find((x) => x._id === product._id);
@@ -32,7 +33,18 @@ export const useCartStore = create((set, get) => ({
   
   clearCart: () => set(() => {
     localStorage.setItem("cartItems", JSON.stringify([]));
-    return { cartItems: [] };
+    localStorage.removeItem("coupon");
+    return { cartItems: [], coupon: null };
+  }),
+  
+  applyCoupon: (couponData) => set(() => {
+    localStorage.setItem("coupon", JSON.stringify(couponData));
+    return { coupon: couponData };
+  }),
+
+  removeCoupon: () => set(() => {
+    localStorage.removeItem("coupon");
+    return { coupon: null };
   }),
   
   itemsPrice: () => get().cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0),
